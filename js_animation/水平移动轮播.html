@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			ul {
+				list-style: none;
+				/* 清除list前面的点点 */
+			}
+
+			.slider {
+				width: 800px;
+				height: 600px;
+				border: 3px solid #000000;
+				position: relative;
+				overflow: hidden;
+			}
+			.slider .list{
+				position: absolute;
+			}
+
+			.slider .list .item {
+				width: 800px;
+				height: 600px;
+				/* position: absolute; */
+				float: left;
+			}
+
+			.slider .list .item img {
+				width: 800px;
+				height: 600px;
+				display: block;
+			}
+
+			.slider .pre,
+			.slider .next {
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				top: 300px
+			}
+
+			.slider .next {
+				right: 0;
+			}
+
+			.slider .pagination {
+				position: relative;
+				left: 340px;
+				top: 500px;
+
+			}
+
+			.slider .pagination .bullet {
+				width: 20px;
+				height: 20px;
+				color: white;
+				background-color: #000000;
+				border: 2px solid yellow;
+				border-radius: 50%;
+				/* 圆 */
+				line-height: 20px;
+				margin-left: 5px;
+				float: left;
+				text-align: center;
+				cursor: pointer;
+				z-index: 999;
+				/* 鼠标放在子弹时显示一个手 */
+			}
+
+			.slider .pagination .bullet.focus {
+				background-color: hotpink;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="slider">
+			<ul class="list">
+				<li class="item"><img src="./imgs/1.jpg" alt=""></li>
+				<li class="item"><img src="./imgs/2.jpg" alt=""></li>
+				<li class="item"><img src="./imgs/3.jpg" alt=""></li>
+				<li class="item"><img src="./imgs/4.jpg" alt=""></li>
+			</ul>
+			<button class="pre"><</button> 
+			<button class="next">></button>
+
+			<ul class="pagination">
+				<li class="bullet focus">1</li>
+				<li class="bullet">2</li>
+				<li class="bullet">3</li>
+				<li class="bullet">4</li>
+			</ul>
+		</div>
+		<script src="./animation.js"></script>
+		<script type="text/javascript">
+			//立即执行函数
+			(function() {
+				var currentIndex, len;
+				var timerId;
+				var bullets;
+				var pre, next;
+				var slider;
+				var list;
+				var li_width;
+
+				init();
+
+				function init() {
+					
+					currentIndex = 1;
+
+					var first_item = document.querySelector(".list .item:first-of-type");
+					var last_item = document.querySelector(".list .item:last-of-type");
+
+					var first_clone = first_item.cloneNode(true);
+					var end_clone = last_item.cloneNode(true);
+
+					list = document.querySelector(".slider .list");
+
+					list.appendChild(first_clone);
+					list.insertBefore(end_clone,first_item);
+
+					var items = document.querySelectorAll(".list .item");
+
+					len = items.length;
+					li_width = items[0].offsetWidth;
+
+					list.style.width = li_width * len + "px";
+					list.style.left = -li_width+"px";
+					
+					pre = document.querySelector(".pre");
+					next = document.querySelector(".next");
+					slider = document.querySelector(".slider");
+					bullets = document.querySelectorAll(".slider .pagination .bullet");
+
+					//为每个子弹绑定事件
+					for (var i = 0; i < bullets.length; i++) {
+
+						bullets[i].index = i;
+
+						bullets[i].onclick = function() {
+							currentIndex = this.index + 1;
+							sliderTo(currentIndex);
+						}
+					}
+
+					pre.onclick = function() {
+						sliderPre();
+					}
+					
+					next.onclick = function() {
+						sliderNext();
+					}
+
+					//鼠标在轮播区域时，开始自动轮播
+					slider.onmouseout = function() {
+						auto();
+					}
+					
+					//鼠标离开轮播区域时，停止轮播
+					slider.onmouseover = function() {
+						stop();
+					}
+				}
+				//自动轮播
+				function auto() {
+					clearInterval(timerId);
+					timerId = setInterval(function() {
+						sliderNext();
+					}, 2000)
+				}
+
+				//停止轮播
+				function stop() {
+					clearInterval(timerId);
+				}
+
+				//向前移动
+				function sliderNext() {
+					currentIndex++;
+					sliderTo(currentIndex);
+				}
+
+				function sliderPre() {
+					currentIndex--;
+					sliderTo(currentIndex);
+				}
+
+				//0 1 2 3 4 5
+				
+				//3 0 1 2 3 0
+                      
+				function sliderTo(index) {
+					
+					var hotIndex;
+					
+					if(index===-1){
+						currentIndex = index = len - 3;
+						list.style.left = -(len -2) *li_width+ "px";
+					}
+					
+					if(index===len){
+						currentIndex = index = 2;
+						list.style.left = - li_width + "px";
+					}
+					
+					hotIndex = index - 1;
+					
+					if(index === len -1){
+						hotIndex = 0;
+					}
+					
+					if(index === 0){
+						hotIndex = bullets.length -1;
+					}
+					
+					
+					var left = -index * li_width;
+					document.querySelector(".bullet.focus").className = "bullet";
+					bullets[hotIndex].className = "bullet focus";
+					animation(list, {
+						left: left
+					});
+				}
+
+			})()
+		</script>
+	</body>
+</html>

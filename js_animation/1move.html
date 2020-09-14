@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			body{
+				overflow: hidden;
+			}
+			div{
+				background-color: #0000FF;
+				position: absolute;
+				width: 80px;
+				height: 80px;
+				left: 0;
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div></div>
+		
+		<script type="text/javascript">
+			var div = document.querySelector("div");
+			//var oDiv = document.getElementsByClassName("div")[0];
+			var xspeed = 3;
+			var yspeed = 3;
+			function move(){
+				var left = parseInt(window.getComputedStyle(div).left);
+				var top = parseInt(window.getComputedStyle(div).top);
+				collision(div);
+				left +=xspeed;
+				top+=yspeed;
+				div.style.left = left +"px";
+				div.style.top = top+"px";
+			}
+			function collision(element){
+				var left = parseInt(window.getComputedStyle(element).left);
+				var top = parseInt(window.getComputedStyle(element).top);
+				var w = parseInt(window.getComputedStyle(element).width);
+				var h = parseInt(window.getComputedStyle(element).height);
+				if(left<0){
+					left = 0;
+					xspeed*=-1;
+				}
+				if(left>window.innerWidth-w)
+				{
+					left = window.innerWidth -w;
+					xspeed*=-1;
+				}
+				if(top<0){
+					top =0;
+					yspeed*=-1;
+				}
+				
+				if(top>window.innerHeight-h){
+					top = window.innerHeight - h;
+					yspeed*=-1;
+				}
+				
+				
+			}
+			setInterval(function(){
+				move();
+			},20)
+		</script>
+	</body>
+</html>
