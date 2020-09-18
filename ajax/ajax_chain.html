@@ -11,10 +11,46 @@
 	</head>
 	<body>
 		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<p></p>
 		<a href="https://www.runoob.com/w3cnote/javascript-promise-object.html">promise</a>
 		
 		<script>
 			
+			 var article = '';
+			// $.get('p1.txt',function(p){
+			// 	article += p + "</br>"
+			// 	$.get('p2.txt',function(p){
+			// 		article+= p + "</br>"
+			// 		$.get('p3.txt',function(p){
+			// 			article+= p + "</br>"
+			// 			$.get('p4.txt',function(p){
+			// 				article+= p + "</br>"
+			// 				$('p').html(article);
+			// 			})
+			// 		})
+			// 	})
+			// })
+			function GetPara(url){
+				return new Promise(function(resolve,reject){
+					$.get(url,function(p){
+						resolve(p);
+					})
+				})
+			}
+			
+			GetPara('p1.txt').then(function(p1){
+				article+=p1+'<br>';
+				return GetPara('p2.txt');
+			}).then(function(p2){
+				article+=p2+'<br>';
+				return GetPara('p3.txt');
+			}).then(function(p3){
+				article+=p3+'<br>';
+				return GetPara('p4.txt');
+			}).then(function(p4){
+				article+=p4+'<br>';
+				$('p').html(article);
+			})
 			
 		</script>
 		
