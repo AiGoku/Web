@@ -13,6 +13,10 @@
 				$("#show").click(function(){
 					$("p").show();
 				});
+				
+				$("#fade").click(function(){
+					$("#div1").fadeTo('slow',0)
+				})
 			})
 		</script>
 	</head>
@@ -20,6 +24,15 @@
 		<p>通过 jQuery，您可以使用 hide() 和 show() 方法来隐藏和显示 HTML 元素：</p>
 		<input type="button" id="hide" value="隐藏" />
 		<input type="button" id="show" value="显示" />
+		
+		<div class="div1">jQuery 拥有下面四种 fade 方法：fadeIn、fadeOut、fadeToggle、fadeTo
+		<li>jQuery fadeIn() 用于淡入已隐藏的元素。 语法:$(selector).fadeIn(speed,callback);</li>
+		<li>jQuery fadeOut() 方法用于淡出可见元素。</li>
+		<li>jQuery fadeToggle() 方法可以在 fadeIn() 与 fadeOut() 方法之间进行切换。</li>
+		<li>jQuery fadeTo() 方法允许渐变为给定的不透明度（值介于 0 与 1 之间）$(selector).fadeTo(speed,opacity,callback);</li>
+		</div>
+		
+		<input type="button" id="fade" value="淡入淡出" />
 		
 		
 	</body>
