@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	
+		<script>
+			$(document).ready(function(){
+				//显示隐藏
+				$("#hide").click(function(){
+					$("p").hide();
+				});
+				
+				$("#show").click(function(){
+					$("p").show();
+				});
+				
+				$("#show_hide").click(function(){
+					$("#p1").toggle();
+					
+				});
+				
+				
+			})
+		</script>
+	</head>
+	<body>
+		<p>通过 jQuery，您可以使用 hide() 和 show() 方法来隐藏和显示 HTML 元素：</p>
+		
+		<input type="button" id="hide" value="隐藏" />
+		<input type="button" id="show" value="显示" />
+		
+		<p id="p1">通过 jQuery，您可以使用 toggle() 方法来切换 hide() 和 show() 方法。</p>
+		<input type="button" id="show_hide" value="显示/隐藏" />
+	</body>
+</html>

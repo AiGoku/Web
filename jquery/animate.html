@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<style type="text/css">
+			div{
+				text-align: center;
+				background:#98bf21;
+				height:100px;
+				width:100px;
+				position:absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+			默认情况下，所有的 HTML 元素有一个静态的位置，且是不可移动的。 
+		如果需要改变为，我们需要将元素的 position 属性设置为 relative, fixed, 或 absolute!
+		</p>
+		<button id="start">开始动画</button>
+		<button id="stop">停止动画</button>
+		<div>真帅</div>
+		<script>
+			$(document).ready(function(){
+				
+				$("#start").click(function(){
+					$("div").animate({
+						left:'250px',
+						opacity:'0.5',
+						//height:'150px',
+						height:'toggle',	//使用预定义 可以是hide、show
+						width:'+=150px'		//使用相对值
+					},3000);
+					
+					//使用队列功能
+					var div = $("div");
+					 div.animate({height:'300px',opacity:'0.4'},3000);
+					div.animate({fontSize:'3em'},3000);
+				});
+				
+				$("#stop").click(function(){
+					$("div").stop(true);//按钮停止当前动画，并清除动画队列，所以元素的所有动画都会停止
+					//$("div").stop(true,true);//停止动画，但完成动作" 快速完成动作，并停止它
+				})
+				
+				
+			});
+		</script>
+		
+	</body>
+</html>
