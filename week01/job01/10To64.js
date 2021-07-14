@@ -23,8 +23,8 @@ function to64(number){
     }
     if(decimals!=0&&flag)
     {
-        //小数部分 乘以64 整数部分取 小数部分为0 或者 位数达到53位
-        while(decimalsIndex<=53&&decimals!=0){
+        //小数部分 乘以64 整数部分取 小数部分为0 或者 位数达到52位
+        while(decimalsIndex<=52&&decimals!=0){
             var numbers = (decimals*64).toString().split('.');
             var tempInteger = parseInt(numbers[0]);
             decimals = decimals*64 - tempInteger;

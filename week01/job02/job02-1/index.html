@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>读取图片转换成灰度图保存</title>
+    <script type="text/javascript"></script>
+</head>
+
+<body>
+    <input type="file" id="file" name="file" onchange="previewFile()" />
+    <div id="source">
+        <img src="" height="800" id="sourceImg">
+    </div>
+    <input type="button" id="convertBtn" value="转换灰色图片" onclick="convertFile()">
+
+    <div id="target">
+        <img src="" height="800" id="targetImg">
+    </div>
+    <input type="button" id="saveBtn" value="保存" onclick="saveFile()">
+    <script>
+        function previewFile() {
+            var preview = document.getElementById('sourceImg');
+            /*
+            var hFile = window.showOpenFilePicker({
+                types:[{
+                    description:"图片",
+                    accept:{
+                        "text/img":[".jpg",".png"]
+                    }
+                }]
+            });
+            
+            var file = hFile.getFile();
+            */
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+
+        }
+
+        function convertFile() {
+            var imgObj = document.getElementById("sourceImg");
+            var convertObj = document.getElementById("targetImg");
+            var canvas = document.createElement('canvas');
+            var canvasContext = canvas.getContext("2d");
+            var imgW = imgObj.width;
+            var imgH = imgObj.height;
+
+            canvas.width = imgW;
+            canvas.height = imgH;
+
+            canvasContext.drawImage(imgObj, 0, 0);
+
+            var imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+            for (var y = 0; y < imgPixels.height; y++) {
+                for (var x = 0; x < imgPixels.width; x++) {
+
+                    var i = (y * 4) * imgPixels.width + x * 4;
+                    var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+                    imgPixels.data[i] = avg;
+                    imgPixels.data[i + 1] = avg;
+                    imgPixels.data[i + 2] = avg;
+                }
+                canvasContext.putImageData(imgPixels, 0, 0, 00, 0, imgPixels.width, imgPixels.height);
+            }
+
+            convertObj.src = canvas.toDataURL();
+
+        }
+
+        function saveFile() {
+            var saveImg = document.getElementById("targetImg");
+            const opts = {
+                types: [{
+                    description: '图片',
+                    accept: { 'text/img': ['.jpg','.png'] },
+                }],
+            };
+            const hFile = window.showSaveFilePicker({id:"targetImg"});
+            hFile.saveFile()
+            
+        }
+    </script>
+</body>
+
+</html>

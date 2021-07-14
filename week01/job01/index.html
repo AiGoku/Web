@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>十进制与六十四进制互转</title>
-<script type="text/javascript" src="./10To64.js"></script>
-<script type="text/javascript">
-   window.onload = function(){
-       var btn10 = document.getElementById("btn10");
-       btn10.onclick = function(){
-    
-        var number10 = document.getElementById("10").value;
-        var result = to64(number10);
-        document.getElementById("result10").innerHTML= result;
-    }
+    <meta charset="utf-8">
+    <title>十进制与六十四进制互转</title>
+    <script type="text/javascript" src="./10To64.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var btn10 = document.getElementById("btn10");
+            btn10.onclick = function () {
 
-    var btn10 = document.getElementById("btn64");
-       btn64.onclick = function(){
-        var number64 = document.getElementById("64").value;
-        var result = to10(number64);
-        document.getElementById("result64").innerHTML= result;
-    }
+                var number10 = document.getElementById("10").value;
+                var result = to64(number10);
+                document.getElementById("result10").innerHTML = result;
+            }
 
-   }
-    
-</script>
+            var btn10 = document.getElementById("btn64");
+            btn64.onclick = function () {
+                var number64 = document.getElementById("64").value;
+                var result = to10(number64);
+                document.getElementById("result64").innerHTML = result;
+            }
+
+        }
+
+    </script>
 </head>
+
 <body>
     <p>十进制转64进制</p>
     <input id="10" type="text" name="10" value="">
-    <input type="button" id="btn10"  value="转换">
-    <br><p>结果：</p> 
+    <input type="button" id="btn10" value="转换">
+    <br>
+    <p>结果：</p>
     <p id="result10"></p>
 
     <p>64进制转10进制</p>
     <input id="64" type="text" name="64" value="">
-    <input type="button" id="btn64"  value="转换">
-    <br><p>结果：</p> 
+    <input type="button" id="btn64" value="转换">
+    <br>
+    <p>结果：</p>
     <p id="result64"></p>
 </body>
+
 </html>
