@@ -47,7 +47,7 @@
                 types: [{
                     description: "图片",
                     accept: {
-                        "text/img": [".jpg", ".png"]
+                        'image/*': [".jpg", ".png"]
                     }
                 }]
             });
@@ -99,32 +99,40 @@
 
 
         const saveFile = async () => {
-            var saveImg = document.getElementById("targetImg");
+            var img = document.getElementById("targetImg");
             const opts = {
                 types: [{
                     description: '图片',
-                    accept: { 'text/img': ['.jpg', '.png'] },
+                    accept: { 'image/*': ['.jpg', '.png'] },
                 }],
             };
+           
+            var  canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img,0,0,img.width,img.height);
+            //var content = canvas.toBlob();
 
+            var dataURI = canvas.toDataURL();
+            var byteString = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            var blob = new Blob([ab], {type: mimeString});
+
+            
             // Destructure the one-element array.
 
             const fHandle = await window.showSaveFilePicker(opts);
+            
 
             const writable = await fHandle.createWritable();
 
-            var file = saveImg.file;
-
-            var reader = new FileReader();
-            reader.readAsBinaryString(file);
-            let contents;
-            reader.onload = (e) => {
-                contents = e.target.result;
-                // Write the contents of the file to the stream.
-
-            }
-
-            await writable.write(contents);
+            await writable.write(blob);
             // Close the file and write the contents to disk.
             await writable.close();
 
