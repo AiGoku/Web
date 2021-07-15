@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <input type="file" id="file" name="file" onchange="previewFile()" />
+    <input type="button" id="file" value="选择文件" onclick="previewFile2()" />
     <div id="source">
         <img src="" height="800" id="sourceImg">
     </div>
@@ -19,21 +19,42 @@
     </div>
     <input type="button" id="saveBtn" value="保存" onclick="saveFile()">
     <script>
+
         function previewFile() {
             var preview = document.getElementById('sourceImg');
-            /*
-            var hFile = window.showOpenFilePicker({
-                types:[{
-                    description:"图片",
-                    accept:{
-                        "text/img":[".jpg",".png"]
+
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+
+        }
+
+
+        const previewFile2 = async () => {
+            var preview = document.getElementById('sourceImg');
+
+            let fileHandle;
+
+            // Destructure the one-element array.
+            [fileHandle] = await window.showOpenFilePicker({
+                types: [{
+                    description: "图片",
+                    accept: {
+                        "text/img": [".jpg", ".png"]
                     }
                 }]
             });
-            
-            var file = hFile.getFile();
-            */
-            var file = document.querySelector('input[type=file]').files[0];
+            /*  */
+            var file = await fileHandle.getFile();
+
+            //var file = document.querySelector('input[type=file]').files[0];
             var reader = new FileReader();
 
             reader.addEventListener("load", function () {
@@ -69,26 +90,48 @@
                     imgPixels.data[i + 1] = avg;
                     imgPixels.data[i + 2] = avg;
                 }
-                canvasContext.putImageData(imgPixels, 0, 0, 00, 0, imgPixels.width, imgPixels.height);
+                canvasContext.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
             }
 
             convertObj.src = canvas.toDataURL();
 
         }
 
-        function saveFile() {
+
+        const saveFile = async () => {
             var saveImg = document.getElementById("targetImg");
             const opts = {
                 types: [{
                     description: '图片',
-                    accept: { 'text/img': ['.jpg','.png'] },
+                    accept: { 'text/img': ['.jpg', '.png'] },
                 }],
             };
-            const hFile = window.showSaveFilePicker({id:"targetImg"});
-            hFile.saveFile()
-            
+
+            // Destructure the one-element array.
+
+            const fHandle = await window.showSaveFilePicker(opts);
+
+            const writable = await fHandle.createWritable();
+
+            var file = saveImg.file;
+
+            var reader = new FileReader();
+            reader.readAsBinaryString(file);
+            let contents;
+            reader.onload = (e) => {
+                contents = e.target.result;
+                // Write the contents of the file to the stream.
+
+            }
+
+            await writable.write(contents);
+            // Close the file and write the contents to disk.
+            await writable.close();
+
+
         }
     </script>
 </body>
+
 
 </html>
